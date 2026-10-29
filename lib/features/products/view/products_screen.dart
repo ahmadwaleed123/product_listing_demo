@@ -47,6 +47,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: 64.w,
+        titleSpacing: 0,
+        leading: Builder(
+          builder: (context) => Padding(
+            padding: EdgeInsets.only(left: 12.w),
+            child: IconButton(
+              tooltip: 'Profile',
+              onPressed: Scaffold.of(context).openDrawer,
+              icon: Consumer<AuthSessionStore>(builder: (_, sessionStore, _) => UserAvatar(user: sessionStore.user)),
+            ),
+          ),
+        ),
         title: Consumer<AuthSessionStore>(
           builder: (_, sessionStore, _) {
             final user = sessionStore.user;
@@ -65,18 +77,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
             );
           },
         ),
-        actions: [
-          Builder(
-            builder: (context) => IconButton(
-              tooltip: 'Profile',
-              onPressed: Scaffold.of(context).openEndDrawer,
-              icon: Consumer<AuthSessionStore>(builder: (_, sessionStore, _) => UserAvatar(user: sessionStore.user)),
-            ),
-          ),
-          SizedBox(width: 8.w),
-        ],
       ),
-      endDrawer: ProfileDrawer(onLogout: _logout),
+      drawer: ProfileDrawer(onLogout: _logout),
       body: Consumer<ProductsStore>(builder: (_, _, _) => _buildBody()),
     );
   }
